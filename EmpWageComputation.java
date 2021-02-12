@@ -5,13 +5,13 @@ public class EmpWageComputation {
 	public static final int MAX_WORKING_DAYS = 20;
 	public static final int MAX_HRS_IN_MONTH = 100;
 
-	public static void main(String[] args)
+	public static void empWageForCompanyWorkers()
 	{
 		int empHrs = 0;
 		int empWage = 0;
 		int totalEmpWage = 0, totalEmpHrs = 0, totalWorkingDays = 0;
 		//Computation
-		while (totalWorkingDays <= MAX_WORKING_DAYS && totalEmpHrs <=  MAX_HRS_IN_MONTH) {
+		while (totalWorkingDays < MAX_WORKING_DAYS && totalEmpHrs <=  MAX_HRS_IN_MONTH) {
 			totalWorkingDays++;
 			int empCheck = (int)Math.floor(Math.random() *10) %3;
 			switch (empCheck) {
@@ -24,15 +24,18 @@ public class EmpWageComputation {
 				default:
 					empHrs = 0;
 			}
-			empWage = empHrs * WAGE_PER_HR;
 			totalEmpHrs += empHrs;
-			totalEmpWage += empWage;
-			System.out.println("Employee Wage is =" +empWage);
+			System.out.println("Day: " + totalWorkingDays + "  Emp Hr: " +empHrs);
 		}
-		System.out.println("Total Employee Hrs =" + totalEmpHrs);
-		System.out.println("Total Working Days =" + totalWorkingDays);
-		System.out.println("Total Monthly Wage =" + totalEmpWage);
-	}	
+		totalEmpWage = totalEmpHrs * WAGE_PER_HR;
+		System.out.println("Total Monthly Wage  for company: " + totalEmpWage);
+	}
+
+	public static void main(String[] args)
+	{
+		empWageForCompanyWorkers();
+	}
+				
 }
 
 
