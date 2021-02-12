@@ -1,21 +1,22 @@
-public class EmpWageComputation
-{
-	public static final int IS_PRESENT = 1;
+public class EmpWageComputation {
+	public static final int IS_FULL_TIME = 1;
+	public static final int IS_PART_TIME = 2;
 	public static final int WAGE_PER_HR = 20;
 
 	public static void main(String[] args)
 	{
-		//Variables
 		int empHrs = 0;
 		int empWage = 0;
 		//Computation
-		double empCheck = Math.floor(Math.random() *10) %2;
-		if (empCheck == IS_PRESENT)
+		double empCheck = Math.floor(Math.random() *10) %3;
+		if (empCheck == IS_FULL_TIME)
 			empHrs = 8;
+		else if (empCheck == IS_PART_TIME)
+			empHrs = 4;
 		else
 			empHrs = 0;
 			empWage = empHrs * WAGE_PER_HR;
-			System.out.println("Employee Wage is =" +empWage);
+		System.out.println("Employee Wage is =" +empWage);
 	}	
 }
 
