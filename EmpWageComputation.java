@@ -1,10 +1,8 @@
 import java.util.LinkedList;
-
 interface ComputeEmpWage {
-	public void addCompanyEmpWage(String company, int empRatePerHr, int maxHrs, int workingDays);
-	public void calculateEmpWageComp();
-	}
-
+	 public void addCompanyEmpWage(String company, int empRatePerHr, int maxHrs, int workingDays);
+         public void calculateEmpWageComp();
+}
 class CompanyEmpWage {
 	public final String company;
 	public final int empRatePerHr;
@@ -17,7 +15,6 @@ class CompanyEmpWage {
                 this.empRatePerHr = empRatePerHr;
                 this.maxHrs = maxHrs;
                 this.workingDays = workingDays;
-		totalEmpWage = 0;
 	}
 
 	public void setTotalEmpWage(int totalEmpWage) {
@@ -27,7 +24,7 @@ class CompanyEmpWage {
                 return "Total Emp Wage for Company: " +company+ " is "+ totalEmpWage;
 	}
 }
-public class EmpWageComputation implements ComputeEmpWage {
+public class EmpWageComputation implements ComputeEmpWage{
 	public static final int IS_FULL_TIME = 1;
         public static final int IS_PART_TIME = 2;
 
@@ -61,7 +58,7 @@ public class EmpWageComputation implements ComputeEmpWage {
                 //Computation
                 while ( (day <= companyEmpWage.workingDays) && (Hrs <= companyEmpWage.maxHrs) ) {
                         int empCheck = (int)Math.floor(Math.random() * 10) % 3;
-							switch(empCheck) {
+			switch(empCheck) {
                         case IS_FULL_TIME:
                                 System.out.println("DAY"+day+"# "+"Employee is Present_Full_Time");
                                 empHrs = 8;
@@ -75,9 +72,11 @@ public class EmpWageComputation implements ComputeEmpWage {
                                 empHrs = 0;
                         }
 
+			// Wage Per Day
+                        wagePerDay = companyEmpWage.empRatePerHr * empHrs;
+			System.out.println("Wage for Day"+day+"#: "+wagePerDay);
                         day += 1;
                         Hrs += empHrs;
-                        wagePerDay = companyEmpWage.empRatePerHr * empHrs;
                         totalSalary += wagePerDay;
                 }
 		return totalSalary;
