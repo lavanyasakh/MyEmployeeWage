@@ -1,77 +1,94 @@
+import java.util.LinkedList;
+
+interface ComputeEmpWage {
+	public void addCompanyEmpWage(String company, int empRatePerHr, int maxHrs, int workingDays);
+	public void calculateEmpWageComp();
+	}
+
 class CompanyEmpWage {
 	public final String company;
-	public final int empRatePerHour;
-	public final int numOfWorkingDays;
-	public final int maxHoursPerMonth;
+	public final int empRatePerHr;
+	public final int workingDays;
+	public final int maxHrs;
 	public int totalEmpWage;
-	
-	public CompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
+
+	public CompanyEmpWage( String company, int empRatePerHr, int maxHrs, int workingDays ) {
 		this.company = company;
-		this.empRatePerHour = empRatePerHour;
-		this.numOfWorkingDays = numOfWorkingDays;
-		this.maxHoursPerMonth = maxHoursPerMonth;
+                this.empRatePerHr = empRatePerHr;
+                this.maxHrs = maxHrs;
+                this.workingDays = workingDays;
+		totalEmpWage = 0;
 	}
-	
+
 	public void setTotalEmpWage(int totalEmpWage) {
 		this.totalEmpWage = totalEmpWage;
 	}
-	
 	public String toString() {
-		return "Total Employee wage for Company: " +company+" is " +totalEmpWage;
+                return "Total Emp Wage for Company: " +company+ " is "+ totalEmpWage;
 	}
 }
+public class EmpWageComputation implements ComputeEmpWage {
+	public static final int IS_FULL_TIME = 1;
+        public static final int IS_PART_TIME = 2;
 
-public class EmpWageComputation {
-    public static final int IS_FULL_TIME = 2;
-    public static final int IS_PART_TIME = 1;
+	private int numOfCompany = 0;
+	private LinkedList<CompanyEmpWage> companyEmpWageList;
 
-    private int numOfCompany = 0;
-    private CompanyEmpWage[] companyEmpWageArray;
-    
-    public EmpWageComputation() {
-    	companyEmpWageArray = new CompanyEmpWage[5];
-    }
-    
-    private void addCompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
-    	companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
-    	numOfCompany++;
-    }
-    
-    private void computeEmpWage() {
-    	for (int i = 0; i < numOfCompany; i++) {
-    		companyEmpWageArray[i].setTotalEmpWage(this.computeEmpWage(companyEmpWageArray[i]));
-    		System.out.println(companyEmpWageArray[i]);
+	public EmpWageComputation() {
+		companyEmpWageList = new LinkedList<>();
+	}
+
+	public void addCompanyEmpWage(String company, int empRatePerHr, int maxHrs, int workingDays) {
+		CompanyEmpWage companyEmpWage = new CompanyEmpWage(company, empRatePerHr, maxHrs, workingDays);
+		companyEmpWageList.add(companyEmpWage);
+	}
+
+	public void calculateEmpWageComp() {
+		for (int i = 0; i < companyEmpWageList.size() ; i++) {
+			CompanyEmpWage companyEmpWage = companyEmpWageList.get(i);
+			companyEmpWage.setTotalEmpWage(this.calculateEmpWageComp(companyEmpWage));
+			System.out.println(companyEmpWage);
 		}
-    }
-    
-    private int computeEmpWage(CompanyEmpWage companyEmpWage) {
-    	int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
-    	while(totalEmpHrs <= companyEmpWage.maxHoursPerMonth && totalWorkingDays < companyEmpWage.numOfWorkingDays) {
-    		totalWorkingDays++;
-    		int empCheck = (int)Math.floor(Math.random() * 10) % 3;
-    		switch(empCheck) {
-    		case IS_PART_TIME:
-    			empHrs = 4;
-    			break;
-    		case IS_FULL_TIME:
-    			empHrs = 8;
-    			break;
-    		default:
-    			empHrs = 0;
-    		}
-    		totalEmpHrs += empHrs;
-    		System.out.println("Day#: " + totalWorkingDays + " Emp Hr: " +empHrs);
-    	}
-    	return totalEmpHrs * companyEmpWage.empRatePerHour;
-    }
-    
-    public static void main(String[] args) {
-    	EmpWageComputation empWageComputation = new EmpWageComputation();
-    	empWageComputation.addCompanyEmpWage("DMart", 20, 6, 22);
-    	empWageComputation.addCompanyEmpWage("Reliance", 15, 9, 20);
-    	empWageComputation.addCompanyEmpWage("Tata Motors", 25, 7, 25);
-    	empWageComputation.computeEmpWage();
-    }
+	}
+
+	public int calculateEmpWageComp(CompanyEmpWage companyEmpWage) {
+		//Constraints
+                int empHrs;
+                int Hrs = 0;
+                int day = 1;
+                int wagePerDay = 0, totalSalary = 0;
+
+                //Computation
+                while ( (day <= companyEmpWage.workingDays) && (Hrs <= companyEmpWage.maxHrs) ) {
+                        int empCheck = (int)Math.floor(Math.random() * 10) % 3;
+							switch(empCheck) {
+                        case IS_FULL_TIME:
+                                System.out.println("DAY"+day+"# "+"Employee is Present_Full_Time");
+                                empHrs = 8;
+                                break;
+                        case IS_PART_TIME:
+                                System.out.println("DAY"+day+"# "+"Employee is Present_Part_Time");
+                                empHrs = 4;
+                                break;
+                        default:
+                                System.out.println("DAY"+day+"# "+"Employee is Absent");
+                                empHrs = 0;
+                        }
+
+                        day += 1;
+                        Hrs += empHrs;
+                        wagePerDay = companyEmpWage.empRatePerHr * empHrs;
+                        totalSalary += wagePerDay;
+                }
+		return totalSalary;
+	}
+
+	public static void main(String[] args) {
+		//Defining a Oject
+		ComputeEmpWage empWage = new EmpWageComputation();
+		empWage.addCompanyEmpWage("HCL",25,90,25);
+                empWage.calculateEmpWageComp();
+	}
 }
 
 
