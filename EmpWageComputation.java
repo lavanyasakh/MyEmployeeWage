@@ -38,9 +38,7 @@ public class EmpWageComputation {
 			System.out.println("Day: " + totalWorkingDays + "  Emp Hr: " +empHrs);
 		}
 		totalEmpWage = totalEmpHrs * empRatePerHr;
-		int[] empTotalWage = new int[1];
-		empTotalWage[0] = totalEmpWage;
-		System.out.println("Total Monthly Wage  for company: " +company+"  Is " +empTotalWage[0]);
+		System.out.println("Total Monthly Wage  for company: " +company+"  Is " +totalEmpWage);
 	}
 
 
@@ -48,8 +46,10 @@ public class EmpWageComputation {
 	{
 		EmpWageComputation dMart = new EmpWageComputation("DMart", 20, 20, 100);
 		EmpWageComputation reliance = new EmpWageComputation("Reliance", 25, 25, 90);	
+		EmpWageComputation bigBazar = new EmpWageComputation("BigBazar", 30, 22, 90);
 		dMart.empWageForCompanyWorkers();
 		reliance.empWageForCompanyWorkers();
+		bigBazar.empWageForCompanyWorkers();
 	}
 				
 }
