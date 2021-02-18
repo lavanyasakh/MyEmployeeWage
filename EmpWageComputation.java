@@ -1,57 +1,77 @@
-public class EmpWageComputation {
-	public static final int IS_FULL_TIME = 1;
-	public static final int IS_PART_TIME = 2;
-
-	private final String company;
-	private final int empRatePerHr;
-	private final int numOfWorkingDays;
-	private final int maxHrsPerMonth;
-
-	public EmpWageComputation(String company, int empRatePerHr, int numOfWorkingDays, int maxHrsPerMonth) 
-	{
+class CompanyEmpWage {
+	public final String company;
+	public final int empRatePerHour;
+	public final int numOfWorkingDays;
+	public final int maxHoursPerMonth;
+	public int totalEmpWage;
+	
+	public CompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
 		this.company = company;
-		this.empRatePerHr = empRatePerHr;
+		this.empRatePerHour = empRatePerHour;
 		this.numOfWorkingDays = numOfWorkingDays;
-		this.maxHrsPerMonth = maxHrsPerMonth;
-	} 
+		this.maxHoursPerMonth = maxHoursPerMonth;
+	}
+	
+	public void setTotalEmpWage(int totalEmpWage) {
+		this.totalEmpWage = totalEmpWage;
+	}
+	
+	public String toString() {
+		return "Total Employee wage for Company: " +company+" is " +totalEmpWage;
+	}
+}
 
-	public void empWageForCompanyWorkers()
-	{
-		int empHrs = 0;
-		int empWage = 0;
-		int totalEmpWage = 0, totalEmpHrs = 0, totalWorkingDays = 0;
-		//Computation
-		while (totalWorkingDays < numOfWorkingDays && totalEmpHrs <=  maxHrsPerMonth) {
-			totalWorkingDays++;
-			int empCheck = (int)Math.floor(Math.random() *10) %3;
-			switch (empCheck) {
-				case IS_FULL_TIME:
-					empHrs = 8;
-					break;
-				case IS_PART_TIME:
-					empHrs = 4;
-					break;
-				default:
-					empHrs = 0;
-			}
-			totalEmpHrs += empHrs;
-			System.out.println("Day: " + totalWorkingDays + "  Emp Hr: " +empHrs);
+public class EmpWageComputation {
+    public static final int IS_FULL_TIME = 2;
+    public static final int IS_PART_TIME = 1;
+
+    private int numOfCompany = 0;
+    private CompanyEmpWage[] companyEmpWageArray;
+    
+    public EmpWageComputation() {
+    	companyEmpWageArray = new CompanyEmpWage[5];
+    }
+    
+    private void addCompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
+    	companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
+    	numOfCompany++;
+    }
+    
+    private void computeEmpWage() {
+    	for (int i = 0; i < numOfCompany; i++) {
+    		companyEmpWageArray[i].setTotalEmpWage(this.computeEmpWage(companyEmpWageArray[i]));
+    		System.out.println(companyEmpWageArray[i]);
 		}
-		totalEmpWage = totalEmpHrs * empRatePerHr;
-		System.out.println("Total Monthly Wage  for company: " +company+"  Is " +totalEmpWage);
-	}
-
-
-	public static void main(String[] args)
-	{
-		EmpWageComputation dMart = new EmpWageComputation("DMart", 20, 20, 100);
-		EmpWageComputation reliance = new EmpWageComputation("Reliance", 25, 25, 90);	
-		EmpWageComputation bigBazar = new EmpWageComputation("BigBazar", 30, 22, 90);
-		dMart.empWageForCompanyWorkers();
-		reliance.empWageForCompanyWorkers();
-		bigBazar.empWageForCompanyWorkers();
-	}
-				
+    }
+    
+    private int computeEmpWage(CompanyEmpWage companyEmpWage) {
+    	int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
+    	while(totalEmpHrs <= companyEmpWage.maxHoursPerMonth && totalWorkingDays < companyEmpWage.numOfWorkingDays) {
+    		totalWorkingDays++;
+    		int empCheck = (int)Math.floor(Math.random() * 10) % 3;
+    		switch(empCheck) {
+    		case IS_PART_TIME:
+    			empHrs = 4;
+    			break;
+    		case IS_FULL_TIME:
+    			empHrs = 8;
+    			break;
+    		default:
+    			empHrs = 0;
+    		}
+    		totalEmpHrs += empHrs;
+    		System.out.println("Day#: " + totalWorkingDays + " Emp Hr: " +empHrs);
+    	}
+    	return totalEmpHrs * companyEmpWage.empRatePerHour;
+    }
+    
+    public static void main(String[] args) {
+    	EmpWageComputation empWageComputation = new EmpWageComputation();
+    	empWageComputation.addCompanyEmpWage("DMart", 20, 6, 22);
+    	empWageComputation.addCompanyEmpWage("Reliance", 15, 9, 20);
+    	empWageComputation.addCompanyEmpWage("Tata Motors", 25, 7, 25);
+    	empWageComputation.computeEmpWage();
+    }
 }
 
 
